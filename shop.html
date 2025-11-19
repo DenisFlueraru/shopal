@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ATOMAT LAB — Shop</title>
+
+<link href="https://api.fontshare.com/v2/css?f[]=neue-kaine@700,500,400&display=swap" rel="stylesheet">
+
+<style>
+:root{
+  --rust:#cd6c27;
+  --acid:#b6d228;
+  --grey:#2f2f2f;
+  --bg:#fefefe;
+  --muted:#bdbdbd;
+}
+
+/* GENERAL */
+html,body{margin:0; font-family:'Neue Kaine',sans-serif; background:var(--bg); color:var(--grey);}
+a{color:inherit; text-decoration:none;}
+
+/* HEADER */
+header{
+  position:sticky; top:0; z-index:40;
+  background:linear-gradient(to bottom, rgba(255,255,255,0.95), rgba(255,255,255,0.6));
+  display:flex; align-items:center; justify-content:center;
+  padding:20px 18px; border-bottom:1px solid #eee;
+}
+.nav { display:flex; gap:28px; align-items:center; }
+.nav a{
+  position: relative;
+  padding-bottom:4px;
+  font-weight:600;
+  letter-spacing:0.6px;
+  transition: color 0.3s ease;
+}
+.nav a:hover::after{
+  width:100%;
+}
+.nav a::after{
+  content:"";
+  position:absolute;
+  left:0; bottom:0;
+  width:0; height:2px;
+  background:var(--acid);
+  transition: width 0.3s ease;
+}
+
+/* Highlight SHOP link with brown rounded rectangle */
+.nav a.shop-link {
+  background: var(--rust);
+  color:#fff;
+  padding:4px 10px;
+  border-radius:6px;
+}
+
+/* CART */
+.cart { position:absolute; right:22px; top:18px; font-size:22px; }
+.cart .dot {
+  position:absolute; right:-6px; top:-6px; width:12px; height:12px; background:var(--acid); border-radius:50%; box-shadow:0 0 6px rgba(182,210,40,0.35); display:none;
+}
+
+/* SHOP GRID */
+.shop-section { padding:40px 18px; max-width:1200px; margin:0 auto; }
+.shop-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:28px;
+}
+.product {
+  background:#fff;
+  border-radius:10px;
+  overflow:hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.product:hover {
+  transform: scale(1.03);
+  box-shadow:0 10px 25px rgba(205,108,39,0.3);
+}
+.product img {
+  width:100%;
+  border-bottom:1px solid #eee;
+  border-radius:8px 8px 0 0;
+  object-fit:cover;
+  aspect-ratio:1/1;
+}
+.product-content {
+  padding:14px 16px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
+}
+.product-title {
+  font-weight:700;
+  font-size:16px;
+}
+.product-desc {
+  font-size:14px;
+  color:#555;
+  flex-grow:1;
+}
+.product-footer {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-top:8px;
+}
+.price { font-weight:600; font-size:15px; color:var(--grey); }
+.add-cart {
+  background:var(--rust);
+  color:#fff;
+  padding:6px 10px;
+  font-size:13px;
+  border-radius:6px;
+  cursor:pointer;
+  user-select:none;
+}
+
+/* FOOTER */
+footer{ text-align:center; padding:28px 12px; color:var(--grey); border-top:1px solid #eee; margin-top:40px; }
+
+/* flipping logo bottom-left */
+.spin-wrapper {
+  position: fixed; left:14px; bottom:14px; width:110px; height:110px; z-index:50; display:flex; align-items:center; justify-content:center; cursor:pointer;
+}
+.flip-image { width:100%; height:100%; object-fit:contain; transition: transform .6s ease; }
+@keyframes bigSpin { from { transform: rotate(0deg);} to { transform: rotate(360deg);} }
+.spin-wrapper.spin360 { animation: bigSpin 18s linear infinite; }
+
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav" aria-label="Main">
+    <a href="#">HOME</a>
+    <a href="#shop" class="shop-link">SHOP</a>
+    <a href="#about">ABOUT</a>
+    <a href="#contact">CONTACT</a>
+  </nav>
+  <div class="cart" aria-hidden="false" title="Cart">🛒<span class="dot" id="cart-dot"></span></div>
+</header>
+
+<main>
+  <!-- SHOP GRID -->
+  <section class="shop-section">
+    <div class="shop-grid">
+
+      <!-- FIELD5 -->
+      <div class="product" onclick="window.location.href='https://atomatlab.com/field5'">
+        <img src="https://lh3.googleusercontent.com/d/150iOi9v4Jqpc7wSW-VhxjSYxrupA0XtP" alt="FIELD5">
+        <div class="product-content">
+          <div class="product-title">FIELD5</div>
+          <div class="product-desc">Phantom-powered contact microphone</div>
+          <div class="product-footer">
+            <div class="price">139.50 EUR</div>
+            <div class="add-cart">Add to cart</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ERT -->
+      <div class="product" onclick="window.location.href='https://atomatlab.com/ert'">
+        <img src="https://lh3.googleusercontent.com/d/1xW6CvmTHOhgokX24koNMhtgFdnTCpCDq" alt="ERT">
+        <div class="product-content">
+          <div class="product-title">ERT</div>
+          <div class="product-desc">The ERT microphone opens a new dimension of listening — electromagnetic sound</div>
+          <div class="product-footer">
+            <div class="price">49.50 EUR</div>
+            <div class="add-cart">Add to cart</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRT2 -->
+      <div class="product" onclick="window.location.href='https://atomatlab.com/crt2'">
+        <img src="https://lh3.googleusercontent.com/d/15CG-aKAg_MkcrrQb-Uz0wNiBd542EEB" alt="CRT2">
+        <div class="product-content">
+          <div class="product-title">CRT2</div>
+          <div class="product-desc">The CRT2 is a refined and more versatile evolution of the CRT1</div>
+          <div class="product-footer">
+            <div class="price">49.50 EUR</div>
+            <div class="add-cart">Add to cart</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CRT1 -->
+      <div class="product" onclick="window.location.href='https://atomatlab.com/crt1'">
+        <img src="https://lh3.googleusercontent.com/d/1VRCSGY7MuUAvB00aIVG8fmuq4-5WJYK_" alt="CRT1">
+        <div class="product-content">
+          <div class="product-title">CRT1</div>
+          <div class="product-desc">The CRT1 is a solid entry-point into the world of tactile sound exploration.</div>
+          <div class="product-footer">
+            <div class="price">39.50 EUR</div>
+            <div class="add-cart">Add to cart</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</main>
+
+<!-- Footer with centered layout + vertical divider -->
+<section class="footer" aria-label="Footer" style="
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:36px;
+  padding:40px 12px 80px;
+  color:var(--grey);
+  border-top:1px solid #eee;
+  flex-wrap:wrap;
+  text-align:center;
+">
+
+  <!-- Left block -->
+  <div style="line-height:1.6;">
+    © ATOMAT LAB — tools that listen<br>
+    <a href="mailto:contact@atomatlab.com" style="color:var(--grey); text-decoration:none;">
+      contact@atomatlab.com
+    </a>
+  </div>
+
+  <!-- vertical divider -->
+  <div style="
+    width:1px;
+    height:60px;
+    background:#d4d4d4;
+    opacity:0.8;
+  "></div>
+
+  <!-- Right block -->
+  <div style="
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    font-size:15px;
+  ">
+    <a href="/terms-of-service" style="color:var(--grey); text-decoration:none; font-weight:600;">
+      Terms of Service
+    </a>
+    <a href="/privacy-policy" style="color:var(--grey); text-decoration:none; font-weight:600;">
+      Privacy Policy
+    </a>
+    <a href="/refund-policy" style="color:var(--grey); text-decoration:none; font-weight:600;">
+      Refund Policy
+    </a>
+  </div>
+
+</section>
+
+<!-- Flipping / rotating logo bottom-left -->
+<a href="https://atomatlab.com" target="_blank" class="spin-wrapper spin360" title="AtomatLab">
+  <img id="rotating-logo" class="flip-image" src="https://lh3.googleusercontent.com/d/1Oz-mWMgJsv7vnKWHDUaHM4pgjF8NZavd" alt="AtomatLab logo">
+</a>
+
+<script>
+// rotating/flipping logo
+(function(){
+  const rotatingLogo = document.getElementById('rotating-logo');
+  const imgs = [
+    'https://lh3.googleusercontent.com/d/1KlB2RLVsabxJ-HLGBKaCUKha6qPRdliK',
+    'https://lh3.googleusercontent.com/d/1Oz-mWMgJsv7vnKWHDUaHM4pgjF8NZavd'
+  ];
+  imgs.forEach(u=>{ const im=new Image(); im.src=u; });
+  let i=0;
+  setInterval(()=> {
+    i = (i+1) % imgs.length;
+    rotatingLogo.classList.toggle('flipped');
+    setTimeout(()=> rotatingLogo.src = imgs[i], 260);
+  }, 3000);
+})();
+</script>
+
+</body>
+</html>

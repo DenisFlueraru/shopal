@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FIELD5 — ATOMAT LAB</title>
+<link href="https://api.fontshare.com/v2/css?f[]=neue-kaine@700,500,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --rust:#cd6c27;
+  --acid:#b6d228;
+  --grey:#2f2f2f;
+  --bg:#fefefe;
+  --muted:#bdbdbd;
+  --white:#ffffff;
+}
+
+/* Reset */
+*{box-sizing:border-box;}
+html,body{margin:0; background:var(--bg); font-family:'Neue Kaine',sans-serif; color:var(--grey);}
+
+/* Header */
+header{
+  position:sticky; top:0; z-index:50;
+  background:linear-gradient(to bottom, rgba(255,255,255,0.97), rgba(255,255,255,0.7));
+  padding:18px 22px; border-bottom:1px solid #eee;
+  display:flex; justify-content:center; align-items:center;
+}
+.nav{display:flex; gap:28px; align-items:center;}
+.nav a{
+  text-decoration:none; color:var(--grey); font-weight:600;
+  letter-spacing:0.6px; padding:6px 8px; position:relative;
+}
+.nav a::after{
+  content:''; position:absolute; left:6px; right:6px; bottom:0; height:3px; background:var(--acid);
+  transform:scaleX(0); transform-origin:left; transition:transform .22s cubic-bezier(.2,.9,.3,1);
+  border-radius:4px;
+}
+.nav a:hover::after{ transform:scaleX(1); }
+.nav a.shop{ background:var(--rust); color:#fff; border-radius:8px; padding:6px 12px; box-shadow:0 6px 18px rgba(182,210,40,0.18); }
+
+/* cart */
+.cart{
+  position:absolute; right:22px; top:16px;
+  display:flex; align-items:center; gap:8px; font-size:20px;
+}
+.cart .count{
+  min-width:22px; height:22px; background:var(--acid); color:#000;
+  font-weight:700; font-size:12px; text-align:center; line-height:22px; border-radius:99px;
+}
+
+/* Product layout */
+.product-page{
+  max-width:1100px; margin:80px auto 60px; padding:0 18px;
+}
+
+/* Product header with image */
+.product-header{
+  display:flex; align-items:center; gap:28px; margin-bottom:50px;
+}
+.product-header img{
+  width:220px; border-radius:14px; box-shadow:0 12px 32px rgba(0,0,0,0.08);
+}
+.product-info h1{
+  font-size:38px; margin:0 0 10px 0;
+}
+.product-info .price{
+  font-size:24px; font-weight:700; margin:10px 0 22px;
+}
+.add-btn{
+  display:inline-block; padding:14px 26px; background:var(--rust); color:#fff; text-decoration:none;
+  font-size:17px; border-radius:10px; font-weight:700; letter-spacing:0.4px;
+  box-shadow:0 6px 22px rgba(182,210,40,0.2), 0 2px 6px rgba(0,0,0,0.08);
+  transition:transform .15s ease;
+}
+.add-btn:hover{ transform:translateY(-2px); }
+
+/* Newspaper style description */
+.desc-block{
+  display:flex; gap:40px; margin-bottom:50px; font-size:17px;
+}
+.desc-block p{ flex:1; line-height:1.55; }
+
+/* Accordion / archive sections */
+.accordion{
+  max-width:760px; margin-bottom:60px;
+}
+.accordion button{
+  width:100%; text-align:left; padding:14px 20px; font-size:18px;
+  border:none; background:var(--rust); color:#fff; font-weight:700;
+  border-radius:8px; margin-bottom:10px; cursor:pointer;
+}
+.accordion-content{
+  max-height:0; overflow:hidden; transition:max-height .3s ease;
+  background:#fff; border:2px solid var(--rust); border-radius:8px; padding:0 18px;
+}
+.accordion-content p{ margin:14px 0; line-height:1.55; }
+.accordion-content b{ color:var(--acid); }
+
+/* Gallery / carousel */
+.carousel-container{ position:relative; max-width:1000px; margin:0 auto 80px; overflow:hidden; border-radius:12px; }
+.carousel-slide{ display:flex; transition:transform .5s ease; }
+.carousel-slide img{
+  width:100%; object-fit:cover; cursor:pointer; border-radius:12px; margin-right:10px;
+  box-shadow:0 12px 28px rgba(0,0,0,0.1);
+}
+
+/* Modal */
+.modal{
+  display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7);
+  justify-content:center; align-items:center; z-index:200;
+}
+.modal-content{ position:relative; max-width:80%; max-height:80%; }
+.modal-content img{ width:100%; height:auto; border-radius:12px; }
+.close-btn, .prev-btn, .next-btn{
+  position:absolute; top:50%; transform:translateY(-50%); font-size:32px; color:#fff; cursor:pointer; user-select:none;
+  background:rgba(0,0,0,0.4); padding:10px; border-radius:50%;
+}
+.close-btn{ top:20px; right:20px; transform:none; font-size:28px; }
+.prev-btn{ left:10px; }
+.next-btn{ right:10px; }
+
+/* Footer */
+.footer{
+  margin-top:80px; padding:40px 12px 80px;
+  display:flex; justify-content:center; align-items:center; gap:36px; flex-wrap:wrap;
+  text-align:center; border-top:1px solid #eee;
+}
+.footer-divider{
+  width:1px; height:60px; background:#d4d4d4; opacity:0.8;
+}
+
+/* Rotating logo */
+.spin-wrapper{
+  position:fixed; left:14px; bottom:14px; width:120px; height:120px;
+  display:flex; justify-content:center; align-items:center; cursor:pointer; z-index:80;
+  animation:spin360 16s linear infinite;
+}
+.flip-image{width:100%; height:100%; object-fit:contain; transition:transform .4s;}
+@keyframes spin360 {from{transform:rotate(0deg);} to{transform:rotate(360deg);}}
+
+/* Responsive */
+@media(max-width:900px){ .desc-block{flex-direction:column;} .product-header{flex-direction:column; align-items:flex-start;} }
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="/">HOME</a>
+    <a href="/shop" class="shop">SHOP</a>
+    <a href="/about">ABOUT</a>
+    <a href="/contact">CONTACT</a>
+  </nav>
+  <div class="cart">
+    <span>👜</span>
+    <span class="count" id="cart-count">0</span>
+  </div>
+</header>
+
+<main class="product-page">
+
+  <!-- Product header with image -->
+  <div class="product-header">
+    <img src="https://lh3.googleusercontent.com/d/1LXmx0lzytjtG2YSTwDm0WBwWxYLqdn2g" alt="FIELD5 Microphone">
+    <div class="product-info">
+      <h1>FIELD5 — Phantom Powered Contact Mic</h1>
+      <div class="price">139.50 EUR</div>
+      <a href="#" class="add-btn" onclick="addToCart()">ADD TO CART</a>
+    </div>
+  </div>
+
+  <!-- Newspaper style description -->
+  <div class="desc-block">
+    <p>Built for <b>sound explorers</b>, FIELD5 is a <b>rugged</b>, <b>waterproof</b> contact microphone designed to reveal the subtle and powerful vibrations hidden inside <b>objects</b>, <b>surfaces</b>, and <b>environments</b>.</p>
+    <p>Housed in a <b>custom 3D-printed enclosure</b> with <b>copper shielding</b>, FIELD5 delivers a clean, low-noise signal through its <b>phantom-powered JFET circuit</b>. Comes with a <b>2m professional cable</b> and <b>Neutrik XLR connector</b> for instant use. Includes <b>modular accessories</b> and a <b>M4 threaded insert</b> for custom attachments.</p>
+  </div>
+
+  <!-- Accordion sections -->
+  <div class="accordion">
+    <button onclick="toggleAccordion(0)">TECH SPECS</button>
+    <div class="accordion-content">
+      <p><b>Frequency Response:</b> 10Hz–18kHz</p>
+      <p><b>Output Impedance:</b> ~2.2kΩ Nominal</p>
+      <p><b>Phantom Power:</b> &lt; 2 mA @ 48V DC</p>
+      <p><b>Dimensions:</b> 55 × 57 mm</p>
+      <p><b>Weight:</b> 175 g</p>
+    </div>
+    <button onclick="toggleAccordion(1)">WHAT YOU GET</button>
+    <div class="accordion-content">
+      <p><b>FIELD5 Microphone</b> with <b>2m cable</b></p>
+      <p><b>Soil spike, suction cup, magnet</b>, <b>Velcro strap</b>, <b>heavy plate</b></p>
+      <p><b>Instruction manual</b></p>
+    </div>
+    <button onclick="toggleAccordion(2)">SOUND SAMPLES</button>
+    <div class="accordion-content">
+      <p><b>Underwater textures</b>, <b>wood resonance</b>, <b>machinery hum</b>, <b>train pulse</b></p>
+    </div>
+  </div>
+
+  <!-- Gallery carousel -->
+  <div class="carousel-container">
+    <div class="carousel-slide" id="carousel-slide">
+      <img src="https://lh3.googleusercontent.com/d/1iKr0SnfVXC_ogsoxrs258BGjiUrXdn6f" onclick="openModal(0)">
+      <img src="https://lh3.googleusercontent.com/d/1-0md-goVaP9cmMjhbNjgFIAfjl5oP8uM" onclick="openModal(1)">
+      <img src="https://lh3.googleusercontent.com/d/1HDN3nBlN-xr7cCbrftqu6bUyMUyShTtH" onclick="openModal(2)">
+      <img src="https://lh3.googleusercontent.com/d/1ez_032iS-3OA7G4UcP7BedovGjlEpSnJ" onclick="openModal(3)">
+      <img src="https://lh3.googleusercontent.com/d/1BsvCleolCmwmkQEFbsN7WM1ZUYOvS4sx" onclick="openModal(4)">
+      <img src="https://lh3.googleusercontent.com/d/1YNjvvcaXtQbe77TZVs4WNqOiWiu8PVZ2" onclick="openModal(5)">
+      <img src="https://lh3.googleusercontent.com/d/18suW_JHW5haOYtnS9Xy5v-Yq3KuOJQ6l" onclick="openModal(6)">
+    </div>
+  </div>
+
+</main>
+
+<!-- Modal -->
+<div class="modal" id="modal">
+  <span class="close-btn" onclick="closeModal()">&times;</span>
+  <span class="prev-btn" onclick="prevSlide()">&#10094;</span>
+  <span class="next-btn" onclick="nextSlide()">&#10095;</span>
+  <div class="modal-content">
+    <img id="modal-img">
+  </div>
+</div>
+
+<!-- Footer -->
+<section class="footer">
+  <div>
+    © ATOMAT LAB — tools that listen<br>
+    <a href="mailto:contact@atomatlab.com" style="color:var(--grey); text-decoration:none;">
+      contact@atomatlab.com
+    </a>
+  </div>
+  <div class="footer-divider"></div>
+  <div style="display:flex; flex-direction:column; gap:6px;">
+    <a href="/terms-of-service" style="color:var(--grey); text-decoration:none; font-weight:600;">Terms of Service</a>
+    <a href="/privacy-policy" style="color:var(--grey); text-decoration:none; font-weight:600;">Privacy Policy</a>
+    <a href="/refund-policy" style="color:var(--grey); text-decoration:none; font-weight:600;">Refund Policy</a>
+  </div>
+</section>
+
+<!-- Rotating logo -->
+<a href="/" class="spin-wrapper">
+  <img id="rotating-logo" class="flip-image" src="https://lh3.googleusercontent.com/d/1Oz-mWMgJsv7vnKWHDUaHM4pgjF8NZavd">
+</a>
+
+<script>
+/* rotate + flip logo */
+(function(){
+  const logo = document.getElementById('rotating-logo');
+  const imgs = [
+    'https://lh3.googleusercontent.com/d/1KlB2RLVsabxJ-HLGBKaCUKha6qPRdliK',
+    'https://lh3.googleusercontent.com/d/1Oz-mWMgJsv7vnKWHDUaHM4pgjF8NZavd'
+  ];
+  imgs.forEach(u=>{ const i=new Image(); i.src=u; });
+  let i=0;
+  setInterval(()=>{
+    logo.style.transform='scaleX(0)';
+    setTimeout(()=>{
+      i=(i+1)%imgs.length;
+      logo.src=imgs[i];
+      logo.style.transform='scaleX(1)';
+    },260);
+  },3000);
+})();
+
+/* Cart count */
+function addToCart(){
+  const el=document.getElementById('cart-count');
+  el.textContent = Number(el.textContent)+1;
+}
+
+/* Accordion toggle */
+function toggleAccordion(n){
+  const all = document.querySelectorAll('.accordion-content');
+  all[n].style.maxHeight = all[n].style.maxHeight ? null : all[n].scrollHeight + "px";
+}
+
+/* Carousel */
+let slideIndex = 0;
+const slideImages = document.querySelectorAll('.carousel-slide img');
+function showSlide(){
+  const slideWidth = slideImages[0].clientWidth + 10;
+  const container = document.getElementById('carousel-slide');
+  slideIndex = (slideIndex+1) % slideImages.length;
+  container.style.transform = `translateX(${-slideWidth*slideIndex}px)`;
+}
+setInterval(showSlide,3000);
+
+/* Modal */
+let currentModal = 0;
+function openModal(idx){
+  currentModal=idx;
+  document.getElementById('modal').style.display='flex';
+  document.getElementById('modal-img').src = slideImages[idx].src;
+}
+function closeModal(){ document.getElementById('modal').style.display='none'; }
+function prevSlide(){
+  currentModal = (currentModal-1+slideImages.length)%slideImages.length;
+  document.getElementById('modal-img').src = slideImages[currentModal].src;
+}
+function nextSlide(){
+  currentModal = (currentModal+1)%slideImages.length;
+  document.getElementById('modal-img').src = slideImages[currentModal].src;
+}
+document.getElementById('modal').addEventListener('click', e=>{
+  if(e.target.id==='modal') closeModal();
+});
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closeModal();
+  if(e.key==='ArrowLeft') prevSlide();
+  if(e.key==='ArrowRight') nextSlide();
+});
+</script>
+
+</body>
+</html>
